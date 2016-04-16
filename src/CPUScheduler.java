@@ -60,36 +60,51 @@ public class CPUScheduler {
             Scheduler currentSetting=schedulers.next();
             if(currentSetting.type.equals("RR")){
                 System.out.println("RR");
-                Queue<processData> readyQueue=new LinkedList<processData>();
+                int timeQuanta=currentSetting.timeQuanta;
+                Queue<processData> readyQueue=new LinkedList<>();//This is ready Queue
+                //Ordering process list according to arrival time
                 orderMode=arrivalTimeOrder;
                 Arrays.sort(processes);
-                int last=-1,time=0;
-                int timeQuanta=currentSetting.timeQuanta;
-                int allDone=0;
+                //variables to hold time, previous states and job status
+                int last=-1,time=0,lastProcess=0,allDone=0;
+                //Process in control of CPU will hold this variable processINcpu
                 processData processINcpu=null;
+                //Run until all jobs are done
                 while(allDone<processCount){
+                    //loading processeses into ready queue based on arrival time
                     for(int i=0;i<processes.length;i++)
                     {
                         if(last<processes[i].arrivalTime && processes[i].arrivalTime<=time)
                             readyQueue.add(processes[i]);
                     }
+                    //loading process in cpu at the end of ready queue based upon its completion status
                     if(processINcpu!=null && processINcpu.workDone!=0)
                     {
                         readyQueue.add(processINcpu);
                     }
+                    //Giving CPU to process at the front of queue
                     processINcpu=readyQueue.remove();
+                    //storing current status into variables for calculation purposes
                     last=time;
+                    lastProcess=processINcpu.pid;
+                    // printing cpu status at current time
                     System.out.println(time+" "+processINcpu.pid);
+                    //updating time variable
                     time+=processINcpu.work(timeQuanta,time);
+                    //updating number of process that are done
                     if(processINcpu.workDone==0) {
                         allDone++;
+                        processINcpu.setWaitingTime(time-processINcpu.burstTime-processINcpu.arrivalTime);
                     }
                 }
+                // calculating average waiting time
                 int totalWaitingTime=0;
-                for(int i=0;i<processCount;i++){
-                    totalWaitingTime+=processes[i].waitingTime;
+                for(int i=0;i<processCount;i++)
+                {
+                  totalWaitingTime+=processes[i].waitingTime;
+                    processes[i].reset();
                 }
-                System.out.println("average waiting time = "+(float)(totalWaitingTime/processCount));
+                System.out.println("total waiting time: "+(float)totalWaitingTime/(float)processCount);
             }
         }
     }
@@ -122,9 +137,11 @@ public class CPUScheduler {
             this.burstTime = burstTime;
             this.priority = priority;
             this.workDone=burstTime;
+            this.waitingTime=0;
         }
         public void reset()
         {
+            waitingTime=0;
             workDone=burstTime;
         }
         public int work(int timeQuanta,int time)
@@ -140,18 +157,17 @@ public class CPUScheduler {
                     retTime=workDone;
                     workDone=0;
                 }
-                if(workDone==0)
-                    waitingTime=time;
                 return retTime;
             }
             else
             {
                 workDone=0;
-                waitingTime=time;
                 return burstTime;
             }
         }
-
+        public void setWaitingTime(int waitingTime){
+            this.waitingTime=waitingTime;
+        }
         public int compareTo(Object p) {
             switch (orderMode) {
                 case 0:
