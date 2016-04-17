@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1cfab7d8-995e-4cf0-b4a2-a244e8d06671" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/CPU_scheduler/CPUScheduler$Scheduler.class" afterPath="$PROJECT_DIR$/out/production/CPU_scheduler/CPUScheduler$Scheduler.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/CPU_scheduler/CPUScheduler$processData.class" afterPath="$PROJECT_DIR$/out/production/CPU_scheduler/CPUScheduler$processData.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/CPU_scheduler/CPUScheduler.class" afterPath="$PROJECT_DIR$/out/production/CPU_scheduler/CPUScheduler.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/input.txt" afterPath="$PROJECT_DIR$/input.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CPUScheduler.java" afterPath="$PROJECT_DIR$/src/CPUScheduler.java" />
@@ -30,13 +33,17 @@
       <file leaf-file-name="CPUScheduler.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/CPUScheduler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="291">
-              <caret line="73" column="80" selection-start-line="73" selection-start-column="80" selection-end-line="73" selection-end-column="80" />
+            <state relative-caret-position="264">
+              <caret line="258" column="32" selection-start-line="258" selection-start-column="32" selection-end-line="258" selection-end-column="32" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="imports" expanded="true" />
-                <element signature="e#6181#6182#0" expanded="true" />
-                <element signature="e#6233#6234#0" expanded="true" />
+                <element signature="method#setup#0;class#CPUScheduler#0" expanded="false" />
+                <element signature="method#main#0;class#CPUScheduler#0" expanded="false" />
+                <element signature="method#calculateAverageRunningTime#0;class#CPUScheduler#0" expanded="false" />
+                <element signature="method#implementRR#0;class#CPUScheduler#0" expanded="false" />
+                <element signature="method#organizeInput#0;class#CPUScheduler#0" expanded="false" />
+                <element signature="class#Scheduler#0;class#CPUScheduler#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -45,8 +52,8 @@
       <file leaf-file-name="input.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/input.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+            <state relative-caret-position="0">
+              <caret line="0" column="4" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -83,10 +90,8 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="744" />
+    <option name="width" value="1366" />
+    <option name="height" value="728" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -113,6 +118,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -147,8 +154,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -609,15 +614,16 @@
       <updated>1460773267985</updated>
       <workItem from="1460773271836" duration="4615000" />
       <workItem from="1460786234337" duration="11849000" />
-      <workItem from="1460830934269" duration="5398000" />
+      <workItem from="1460830934269" duration="5730000" />
+      <workItem from="1460850829673" duration="7302000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21862000" />
+    <option name="totallyTimeSpent" value="29496000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="0" y="0" width="1366" height="728" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -628,11 +634,11 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.329653" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3381877" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24963397" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2525926" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -660,7 +666,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="8" />
+      <option name="time" value="19" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -676,8 +682,37 @@
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="imports" expanded="true" />
-            <element signature="e#6181#6182#0" expanded="true" />
-            <element signature="e#6233#6234#0" expanded="true" />
+            <element signature="method#setup#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="method#main#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="method#calculateAverageRunningTime#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="method#implementRR#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="method#organizeInput#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="class#Scheduler#0;class#CPUScheduler#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/input.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CPUScheduler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="method#setup#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="method#main#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="method#calculateAverageRunningTime#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="method#implementRR#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="method#organizeInput#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="class#Scheduler#0;class#CPUScheduler#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -697,8 +732,12 @@
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="imports" expanded="true" />
-            <element signature="e#6181#6182#0" expanded="true" />
-            <element signature="e#6233#6234#0" expanded="true" />
+            <element signature="method#setup#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="method#main#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="method#calculateAverageRunningTime#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="method#implementRR#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="method#organizeInput#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="class#Scheduler#0;class#CPUScheduler#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -713,21 +752,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/input.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        <state relative-caret-position="0">
+          <caret line="0" column="4" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/CPUScheduler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="291">
-          <caret line="73" column="80" selection-start-line="73" selection-start-column="80" selection-end-line="73" selection-end-column="80" />
+        <state relative-caret-position="264">
+          <caret line="258" column="32" selection-start-line="258" selection-start-column="32" selection-end-line="258" selection-end-column="32" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="imports" expanded="true" />
-            <element signature="e#6181#6182#0" expanded="true" />
-            <element signature="e#6233#6234#0" expanded="true" />
+            <element signature="method#setup#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="method#main#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="method#calculateAverageRunningTime#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="method#implementRR#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="method#organizeInput#0;class#CPUScheduler#0" expanded="false" />
+            <element signature="class#Scheduler#0;class#CPUScheduler#0" expanded="false" />
           </folding>
         </state>
       </provider>

@@ -25,7 +25,7 @@ public class CPUScheduler {
     }
     public void execute(){
         organizeInput();
-        simulator(Scheduler_settings,processes);
+        simulator();
     }
 
     public static void main(String[] args) {
@@ -33,7 +33,103 @@ public class CPUScheduler {
         cpu.execute();
 
     }
-
+    private void calculateAverageRunningTime(){
+        int totalWaitingTime=0;
+        for(int i=0;i<processCount;i++)
+        {
+            totalWaitingTime+=processes[i].waitingTime;
+            processes[i].reset();
+        }
+        System.out.println("total waiting time: "+(float)totalWaitingTime/(float)processCount);
+    }
+    private void implementRR(int timeQuanta){
+        Queue<processData> readyQueue=new LinkedList<>();//This is ready Queue
+        //Ordering process list according to arrival time
+        orderMode=arrivalTimeOrder;
+        Arrays.sort(processes);
+        //variables to hold time, previous states and job status
+        int last=-1,time=0,allDone=0;
+        //Process in control of CPU will hold this variable processINcpu
+        processData processINcpu=null;
+        //Run until all jobs are done
+        while(allDone<processCount){
+            //loading processeses into ready queue based on arrival time
+            for(int i=0;i<processes.length;i++)
+            {
+                if(last<processes[i].arrivalTime && processes[i].arrivalTime<=time)
+                    readyQueue.add(processes[i]);
+            }
+            //loading process in cpu at the end of ready queue based upon its completion status
+            if(processINcpu!=null && processINcpu.workDone!=0)
+            {
+                readyQueue.add(processINcpu);
+            }
+            //Giving CPU to process at the front of queue
+            processINcpu=readyQueue.remove();
+            //storing current status into variables for calculation purposes
+            last=time;
+            // printing cpu status at current time
+            System.out.println(time+" "+processINcpu.pid);
+            //updating time variable
+            time+=processINcpu.work(timeQuanta,time);
+            //updating number of process that are done
+            if(processINcpu.workDone==0) {
+                allDone++;
+                processINcpu.setWaitingTime(time-processINcpu.burstTime-processINcpu.arrivalTime);
+            }
+        }
+        // calculating average waiting time
+        calculateAverageRunningTime();
+    }
+    private void implementSJF(){
+        List<processData> readyQueue =new ArrayList<>();
+        orderMode=burstTimeOrder;
+        Arrays.sort(processes);
+        processData processINcpu=null;
+        int allDone=0,time=0,last=-1;
+        while(allDone<processCount){
+            for(int i=0;i<processCount;i++)
+            {
+                if(last<processes[i].arrivalTime && processes[i].arrivalTime<=time)
+                    readyQueue.add(processes[i]);
+            }
+            Collections.sort(readyQueue);
+            processINcpu=readyQueue.remove(0);
+            last=time;
+            System.out.println(time+" "+processINcpu.pid);
+            time+=processINcpu.work(0,time);
+            if(processINcpu.workDone==0) {
+                allDone+=1;
+                processINcpu.setWaitingTime(time-processINcpu.burstTime-processINcpu.arrivalTime);
+            }
+        }
+        calculateAverageRunningTime();
+    }
+    private void implementPR_noPREMP(){
+        List<processData> readyQueue =new ArrayList<>();
+        orderMode=arrivalTimeOrder;
+        Arrays.sort(processes);
+        processData processINcpu=null;
+        int allDone=0,time=0,last=-1;
+        while(allDone<processCount){
+            for(int i=0;i<processCount;i++)
+            {
+                if(last<processes[i].arrivalTime && processes[i].arrivalTime<=time)
+                    readyQueue.add(processes[i]);
+            }
+            orderMode=priorityOrder;
+            Collections.sort(readyQueue);
+            processINcpu=readyQueue.remove(0);
+            last=time;
+            System.out.println(time+" "+processINcpu.pid);
+            time+=processINcpu.work(0,time);
+            if(processINcpu.workDone==0) {
+                allDone+=1;
+                processINcpu.setWaitingTime(time-processINcpu.burstTime-processINcpu.arrivalTime);
+            }
+        }
+        calculateAverageRunningTime();
+    }
     private void organizeInput() {
         scan = setup("input.txt");
         Scanner firstLine = new Scanner(scan.nextLine());
@@ -53,58 +149,22 @@ public class CPUScheduler {
             processes[i] = new processData(thisLine.nextInt(), thisLine.nextInt(), thisLine.nextInt(), thisLine.nextInt());
         }
     }
-    private void simulator(Set<Scheduler> Scheduler_settings,processData[] processes){
+    private void simulator(){
         Iterator<Scheduler> schedulers=Scheduler_settings.iterator();
         while(schedulers.hasNext())
         {
             Scheduler currentSetting=schedulers.next();
             if(currentSetting.type.equals("RR")){
                 System.out.println("RR");
-                int timeQuanta=currentSetting.timeQuanta;
-                Queue<processData> readyQueue=new LinkedList<>();//This is ready Queue
-                //Ordering process list according to arrival time
-                orderMode=arrivalTimeOrder;
-                Arrays.sort(processes);
-                //variables to hold time, previous states and job status
-                int last=-1,time=0,lastProcess=0,allDone=0;
-                //Process in control of CPU will hold this variable processINcpu
-                processData processINcpu=null;
-                //Run until all jobs are done
-                while(allDone<processCount){
-                    //loading processeses into ready queue based on arrival time
-                    for(int i=0;i<processes.length;i++)
-                    {
-                        if(last<processes[i].arrivalTime && processes[i].arrivalTime<=time)
-                            readyQueue.add(processes[i]);
-                    }
-                    //loading process in cpu at the end of ready queue based upon its completion status
-                    if(processINcpu!=null && processINcpu.workDone!=0)
-                    {
-                        readyQueue.add(processINcpu);
-                    }
-                    //Giving CPU to process at the front of queue
-                    processINcpu=readyQueue.remove();
-                    //storing current status into variables for calculation purposes
-                    last=time;
-                    lastProcess=processINcpu.pid;
-                    // printing cpu status at current time
-                    System.out.println(time+" "+processINcpu.pid);
-                    //updating time variable
-                    time+=processINcpu.work(timeQuanta,time);
-                    //updating number of process that are done
-                    if(processINcpu.workDone==0) {
-                        allDone++;
-                        processINcpu.setWaitingTime(time-processINcpu.burstTime-processINcpu.arrivalTime);
-                    }
-                }
-                // calculating average waiting time
-                int totalWaitingTime=0;
-                for(int i=0;i<processCount;i++)
-                {
-                  totalWaitingTime+=processes[i].waitingTime;
-                    processes[i].reset();
-                }
-                System.out.println("total waiting time: "+(float)totalWaitingTime/(float)processCount);
+                implementRR(currentSetting.timeQuanta);
+            }
+            else if(currentSetting.type.equals("SJF")){
+                System.out.println("SJF");
+                implementSJF();
+            }
+            else if(currentSetting.type.equals("PR_noPREMP")){
+                System.out.println("PR_noPREMP");
+                implementPR_noPREMP();
             }
         }
     }
@@ -186,12 +246,12 @@ public class CPUScheduler {
                     else
                         return 0;
                 case 2:
-                    if (this.burstTime > ((processData) p).burstTime)
-                        return 1;
-                    else if (this.burstTime < ((processData) p).burstTime)
-                        return -1;
-                    else
-                        return 0;
+                        if (this.burstTime > ((processData) p).burstTime)
+                            return 1;
+                        else if (this.burstTime < ((processData) p).burstTime)
+                            return -1;
+                        else
+                            return 0;
                 case 3:
                     if (this.priority > ((processData) p).priority)
                         return 1;
