@@ -3,6 +3,7 @@
  */
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.util.*;
 
 public class CPUScheduler {
@@ -12,20 +13,26 @@ public class CPUScheduler {
     private int processCount;
     private processData processes[];
     private int orderMode = 2;
+    private PrintWriter toFile;
 
     //Create a Scanner object from input file, throws a exception when file not found
-    private static Scanner setup(String fileName) {
-        Scanner scan = null;
+    private void setup(String fileName) {
         try {
             scan = new Scanner(new File(fileName));
         } catch (Exception e) {
-            System.out.println("file not found");
+            toFile.println("file not found");
         }
-        return scan;
+        try{
+            toFile=new PrintWriter("output.txt","UTF-8");
+        }
+        catch(Exception e) {
+            toFile.println("file not found");
+        }
     }
     public void execute(){
         organizeInput();
         simulator();
+        toFile.close();
     }
 
     public static void main(String[] args) {
@@ -40,7 +47,7 @@ public class CPUScheduler {
             totalWaitingTime+=processes[i].waitingTime;
             processes[i].reset();
         }
-        System.out.println("total waiting time: "+(float)totalWaitingTime/(float)processCount);
+        toFile.println("AVG Waiting Time: "+(float)totalWaitingTime/(float)processCount);
     }
     private void implementRR(int timeQuanta){
         Queue<processData> readyQueue=new LinkedList<>();//This is ready Queue
@@ -69,7 +76,7 @@ public class CPUScheduler {
             //storing current status into variables for calculation purposes
             last=time;
             // printing cpu status at current time
-            System.out.println(time+" "+processINcpu.pid);
+            toFile.println(time+" "+processINcpu.pid);
             //updating time variable
             time+=processINcpu.work(timeQuanta,time);
             //updating number of process that are done
@@ -96,7 +103,7 @@ public class CPUScheduler {
             Collections.sort(readyQueue);
             processINcpu=readyQueue.remove(0);
             last=time;
-            System.out.println(time+" "+processINcpu.pid);
+            toFile.println(time+" "+processINcpu.pid);
             time+=processINcpu.work(0,time);
             if(processINcpu.workDone==0) {
                 allDone+=1;
@@ -121,7 +128,7 @@ public class CPUScheduler {
             Collections.sort(readyQueue);
             processINcpu=readyQueue.remove(0);
             last=time;
-            System.out.println(time+" "+processINcpu.pid);
+            toFile.println(time+" "+processINcpu.pid);
             time+=processINcpu.work(0,time);
             if(processINcpu.workDone==0) {
                 allDone+=1;
@@ -131,7 +138,7 @@ public class CPUScheduler {
         calculateAverageRunningTime();
     }
     private void organizeInput() {
-        scan = setup("input.txt");
+        setup("input.txt");
         Scanner firstLine = new Scanner(scan.nextLine());
         Scanner secondLine = new Scanner(scan.nextLine());
         while (firstLine.hasNext()) {
@@ -149,26 +156,68 @@ public class CPUScheduler {
             processes[i] = new processData(thisLine.nextInt(), thisLine.nextInt(), thisLine.nextInt(), thisLine.nextInt());
         }
     }
+    private void implementPR_withPREMP(){
+        List<processData> readyQueue =new ArrayList<>();
+        orderMode=arrivalTimeOrder;
+        Arrays.sort(processes);
+        processData processINcpu=null;
+        int allDone=0,time=0,last=-1;
+        while(allDone<processCount){
+            for(int i=0;i<processCount;i++)
+            {
+                if(last<processes[i].arrivalTime && processes[i].arrivalTime<=time)
+                    readyQueue.add(processes[i]);
+            }
+            if(processINcpu!=null && processINcpu.workDone!=0)
+            {
+                readyQueue.add(processINcpu);
+            }
+            orderMode=priorityOrder;
+            Collections.sort(readyQueue);
+            processINcpu=readyQueue.remove(0);
+            int timeTaken=time+processINcpu.workDone;
+            int interruptTime=0;
+            for(int i=0;i<processCount;i++)
+            {
+                if(last<processes[i].arrivalTime && processes[i].arrivalTime<timeTaken && processes[i].priority<processINcpu.priority)
+                {
+                    interruptTime=processes[i].arrivalTime-time;
+                    break;
+                }
+            }
+            last=time;
+            toFile.println(time+" "+processINcpu.pid);
+            time+=processINcpu.work(interruptTime,time);
+            if(processINcpu.workDone==0) {
+                allDone+=1;
+                processINcpu.setWaitingTime(time-processINcpu.burstTime-processINcpu.arrivalTime);
+            }
+        }
+        calculateAverageRunningTime();
+    }
     private void simulator(){
         Iterator<Scheduler> schedulers=Scheduler_settings.iterator();
         while(schedulers.hasNext())
         {
             Scheduler currentSetting=schedulers.next();
             if(currentSetting.type.equals("RR")){
-                System.out.println("RR");
+                toFile.println("RR");
                 implementRR(currentSetting.timeQuanta);
             }
             else if(currentSetting.type.equals("SJF")){
-                System.out.println("SJF");
+                toFile.println("SJF");
                 implementSJF();
             }
             else if(currentSetting.type.equals("PR_noPREMP")){
-                System.out.println("PR_noPREMP");
+                toFile.println("PR_noPREMP");
                 implementPR_noPREMP();
+            }
+            else if(currentSetting.type.equals("PR_withPREMP")){
+                toFile.println("PR_withPREMP");
+                implementPR_withPREMP();
             }
         }
     }
-
     private class Scheduler {
         String type;
         int timeQuanta;
@@ -206,8 +255,8 @@ public class CPUScheduler {
         }
         public int work(int timeQuanta,int time)
         {
+            int retTime=0;
             if(timeQuanta>0) {
-                int retTime=0;
                 if(timeQuanta<=workDone) {
                     workDone -= timeQuanta;
                     retTime=timeQuanta;
@@ -221,9 +270,10 @@ public class CPUScheduler {
             }
             else
             {
+                retTime=workDone;
                 workDone=0;
-                return burstTime;
             }
+            return retTime;
         }
         public void setWaitingTime(int waitingTime){
             this.waitingTime=waitingTime;

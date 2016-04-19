@@ -1,0 +1,28 @@
+PR_noPREMP
+0 1
+8 2
+9 4
+11 3
+AVG Waiting Time: 3.5
+PR_withPREMP
+0 1
+3 2
+4 1
+6 4
+8 1
+11 3
+AVG Waiting Time: 2.25
+RR
+0 1
+3 2
+4 1
+7 3
+9 4
+11 1
+AVG Waiting Time: 2.5
+SJF
+0 1
+8 2
+9 3
+11 4
+AVG Waiting Time: 3.5
